@@ -47,4 +47,4 @@ for i in package_envs:
 
 os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
 wandb.init(project="gpu-temperature-monitor")
-os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --theme dark --gradio-queue --disable-safe-unpickle")
+os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --theme dark --gradio-queue --disable-safe-unpickle --ngrok=2Z4gIgLcc0W20vmdmTHTgwlWXdR_5aHNP91mnkn1mFYXUKKEz")
