@@ -14,8 +14,8 @@ plugins = [
     "https://gitcode.net/ranting8323/sd-webui-prompt-all-in-one",
     "https://gitcode.net/ranting8323/sd-webui-inpaint-anything",
     "https://gitcode.net/ranting8323/a1111-sd-webui-tagcomplete",
-    "https://github.moeyy.xyz/https://github.com/zanllp/sd-webui-infinite-image-browsing",
-    "https://github.moeyy.xyz/https://github.com/vladmandic/sd-extension-system-info"
+    "https://gitcode.net/nightaway/sd-webui-infinite-image-browsing",
+    "https://openi.pcl.ac.cn/2575044704/sd-extension-system-info"
 ]
 
 for plugin in plugins:
