@@ -43,7 +43,6 @@ package_envs = [
 os.environ["PIP_INDEX_URL"] = "https://mirrors.aliyun.com/pypi/simple/"
 for i in package_envs:
     os.environ[i["env"]] = i["url"]
-!pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 
 os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
