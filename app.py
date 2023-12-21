@@ -33,4 +33,16 @@ os.system(f"aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://hf-mir
 # os.system(f"aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://download.openxlab.org.cn/models/camenduru/cyber-realistic/weight//cyberrealistic_v32.safetensors -d /home/xlab-app-center/stable-diffusion-webui/models/Stable-diffusion -o cyberrealistic_v32.safetensors")
 os.chdir(f"/home/xlab-app-center/stable-diffusion-webui")
 print('webui launching...')
+import os
+package_envs = [
+    {"env": "STABLE_DIFFUSION_REPO", "url": os.environ.get('STABLE_DIFFUSION_REPO', "https://gitcode.net/overbill1683/stablediffusion")},
+    {"env": "STABLE_DIFFUSION_XL_REPO", "url": os.environ.get('STABLE_DIFFUSION_XL_REPO', "https://gitcode.net/overbill1683/generative-models")},
+    {"env": "K_DIFFUSION_REPO", "url": os.environ.get('K_DIFFUSION_REPO', "https://gitcode.net/overbill1683/k-diffusion")},
+    {"env": "CODEFORMER_REPO", "url": os.environ.get('CODEFORMER_REPO', "https://gitcode.net/overbill1683/CodeFormer")},
+    {"env": "BLIP_REPO", "url": os.environ.get('BLIP_REPO', "https://gitcode.net/overbill1683/BLIP")},
+]
+os.environ["PIP_INDEX_URL"] = "https://mirrors.aliyun.com/pypi/simple/"
+for i in package_envs:
+    os.environ[i["env"]] = i["url"]
+!pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --theme dark --gradio-queue --disable-safe-unpickle")
