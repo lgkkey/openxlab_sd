@@ -20,7 +20,7 @@ plugins = [
 
 for plugin in plugins:
     os.system(f"git clone {plugin}")
-os.mkdir('/home/xlab-app-center/stable-diffusion-webui/models/adetailer')
+os.makedirs(/home/xlab-app-center/stable-diffusion-webui/models/adetailer, exist_ok=True)
 os.chdir(f"/home/xlab-app-center/stable-diffusion-webui/models/adetailer")
 os.system(f"aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://hf-mirror.com/Bingsu/adetailer/resolve/main/hand_yolov8s.pt -d /home/xlab-app-center/stable-diffusion-webui/models/adetailer -o hand_yolov8s.pt")
 os.system(f"aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://hf-mirror.com/Bingsu/adetailer/resolve/main/hand_yolov8n.pt -d /home/xlab-app-center/stable-diffusion-webui/models/adetailer -o hand_yolov8n.pt")
