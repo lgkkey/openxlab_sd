@@ -1,5 +1,5 @@
 import os
-import wandb
+# import wandb
 os.chdir(f"/home/xlab-app-center")
 os.system(f"git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui /home/xlab-app-center/stable-diffusion-webui")
 os.system(f"cp /home/xlab-app-center/styles.csv /home/xlab-app-center/stable-diffusion-webui/styles.csv")
@@ -47,7 +47,7 @@ for i in package_envs:
     os.environ[i["env"]] = i["url"]
 
 
-os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
-wandb.init(project="gpu-temperature-monitor")
+#os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
+#wandb.init(project="gpu-temperature-monitor")
 os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --ui-settings-file /home/xlab-app-center/config.json --ui-config-file /home/xlab-app-center/ui-config.json --gradio-queue --disable-safe-unpickle --ngrok=2Z4gIgLcc0W20vmdmTHTgwlWXdR_5aHNP91mnkn1mFYXUKKEz")
 #os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --ui-settings-file /home/xlab-app-center/config.json --ui-config-file /home/xlab-app-center/ui-config.json --gradio-queue --disable-safe-unpickle --ngrok=2Z4gIgLcc0W20vmdmTHTgwlWXdR_5aHNP91mnkn1mFYXUKKEz & python launch.py --api --ui-settings-file /home/xlab-app-center/config.json --ui-config-file /home/xlab-app-center/ui-config.json --xformers --enable-insecure-extension-access --gradio-queue --disable-safe-unpickle --port=7861 --ngrok=2YteSlIvArBGFgXx70rY6MN1ThW_gUnTwjXzT5kbnNozZFL2")
