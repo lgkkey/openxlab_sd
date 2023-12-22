@@ -15,7 +15,8 @@ plugins = [
     "https://gitcode.net/ranting8323/sd-webui-inpaint-anything",
     "https://gitcode.net/ranting8323/a1111-sd-webui-tagcomplete",
     "https://gitcode.net/nightaway/sd-webui-infinite-image-browsing",
-    "https://openi.pcl.ac.cn/2575044704/sd-extension-system-info"
+    "https://openi.pcl.ac.cn/2575044704/sd-extension-system-info",
+    "https://openi.pcl.ac.cn/2575044704/batchlinks-webui"
 ]
 
 for plugin in plugins:
@@ -47,4 +48,4 @@ for i in package_envs:
 
 os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
 wandb.init(project="gpu-temperature-monitor")
-os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --theme dark --gradio-queue --disable-safe-unpickle --ngrok=2Z4gIgLcc0W20vmdmTHTgwlWXdR_5aHNP91mnkn1mFYXUKKEz")
+os.system(f"python launch.py --api --xformers --enable-insecure-extension-access --theme dark --gradio-queue --disable-safe-unpickle --ngrok=2Z4gIgLcc0W20vmdmTHTgwlWXdR_5aHNP91mnkn1mFYXUKKEz & python launch.py --api --xformers --enable-insecure-extension-access --theme dark --gradio-queue --disable-safe-unpickle --port=7861 --ngrok=2YteSlIvArBGFgXx70rY6MN1ThW_gUnTwjXzT5kbnNozZFL2")
