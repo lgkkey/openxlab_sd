@@ -2,8 +2,8 @@
 torch==2.1.2+cu121
 torchvision==0.16.2+cu121
 torchaudio
-torchtext==0.15.2
-torchdata==0.6.1
+torchtext
+torchdata
 xformers==0.0.23
 triton==2.1.0
 wandb
