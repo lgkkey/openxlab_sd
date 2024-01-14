@@ -131,7 +131,7 @@
     "keyedit_delimiters": ".,\\/!?%^*;:{}=`~()",
     "quicksettings": "sd_model_checkpoint,sd_vae,upscaler_for_img2img,CLIP_stop_at_last_layers",
     "hidden_tabs": [],
-    "ui_reorder": "inpaint, sampler, checkboxes, hires_fix, dimensions, cfg, seed, batch, override_settings, scripts",
+    "ui_reorder": "inpaint",
     "ui_extra_networks_tab_reorder": "",
     "localization": "zh_CN",
     "gradio_theme": "NoCrypt/miku",
@@ -141,7 +141,7 @@
     "show_progress_every_n_steps": 10,
     "show_progress_type": "Approx NN",
     "live_preview_content": "Prompt",
-    "live_preview_refresh_period": 10,
+    "live_preview_refresh_period": 1,
     "hide_samplers": [
         "LMS",
         "Heun"
