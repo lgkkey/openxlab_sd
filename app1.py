@@ -15,7 +15,9 @@ import threading
 import time
 import socket
 from concurrent.futures import ProcessPoolExecutor
-
+import time
+import nvidia_smi
+# import wandb
 
 # import wandb
 os.system("pip install nvidia-ml-py3")
@@ -69,13 +71,11 @@ for i in package_envs:
     os.environ[i["env"]] = i["url"]
 
 # WandB登录
-os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
+# os.system('wandb login 5c00964de1bb95ec1ab24869d4c523c59e0fb8e3')
 
 # 初始化WandB项目
-wandb.init(project="gpu-temperature-monitor")
-import time
-import nvidia_smi
-import wandb
+# wandb.init(project="gpu-temperature-monitor")
+
 show_shell_info = False
 def run(command, cwd=None, desc=None, errdesc=None, custom_env=None,try_error:bool=True) -> str:
     global show_shell_info
@@ -202,7 +202,7 @@ def monitor_gpu():
             gpu_usage = utilization.gpu
 
             # 使用 WandB 记录 GPU 温度和使用率
-            wandb.log({"GPU 温度": gpu_temperature, "GPU 使用率": gpu_usage})
+            # wandb.log({"GPU 温度": gpu_temperature, "GPU 使用率": gpu_usage})
 
         except Exception as e:
             print(f"Error: {e}")
@@ -232,13 +232,16 @@ def start():
         # 在这里处理异常的代码
         print(f"启动SD发生错误: {e}")
 # Create threads for each function
-wandb_thread = threading.Thread(target=monitor_gpu)
+# wandb_thread = threading.Thread(target=monitor_gpu)
 start_thread = threading.Thread(target=start)
 
 # Start the threads
-wandb_thread.start()
+# wandb_thread.start()
 start_thread.start()
 
 # Wait for both threads to finish
-wandb_thread.join()
+# wandb_thread.join()
 start_thread.join()
+
+while True:
+    time.sleep(10000)
