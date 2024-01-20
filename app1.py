@@ -16,7 +16,6 @@ import time
 import socket
 from concurrent.futures import ProcessPoolExecutor
 import time
-import nvidia_smi
 # import wandb
 
 # import wandb
@@ -187,27 +186,6 @@ server
         run(f'''nginx -c /home/xlab-app-center/etc/nginx/nginx.conf''')
     run(f'''nginx -s reload''')
     
-# 初始化 nvidia_smi
-nvidia_smi.nvmlInit()
-
-def monitor_gpu():
-    while True:
-        try:
-            # 获取 GPU 温度
-            handle = nvidia_smi.nvmlDeviceGetHandleByIndex(0)  # 0 表示第一个 GPU
-            gpu_temperature = nvidia_smi.nvmlDeviceGetTemperature(handle, nvidia_smi.NVML_TEMPERATURE_GPU)
-
-            # 获取 GPU 使用率
-            utilization = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
-            gpu_usage = utilization.gpu
-
-            # 使用 WandB 记录 GPU 温度和使用率
-            # wandb.log({"GPU 温度": gpu_temperature, "GPU 使用率": gpu_usage})
-
-        except Exception as e:
-            print(f"Error: {e}")
-
-        time.sleep(60)
 
 def start():
     #try:
