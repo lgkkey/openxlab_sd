@@ -3,7 +3,7 @@ function gradioApp() {
     const elem = elems.length == 0 ? document : elems[0];
 
     if (elem !== document) {
-        elem.getElementById = function(id) {
+        elem.getElementById = function (id) {
             return document.getElementById(id);
         };
     }
@@ -24,6 +24,8 @@ function get_uiCurrentTabContent() {
     return gradioApp().querySelector('#tabs > .tabitem[id^=tab_]:not([style*="display: none"])');
 }
 
+var onceUiLoadedCallbacks = [];
+var onceUiLoadedCallbacks_on = [];
 var uiUpdateCallbacks = [];
 var uiAfterUpdateCallbacks = [];
 var uiLoadedCallbacks = [];
@@ -59,6 +61,18 @@ function onAfterUiUpdate(callback) {
 function onUiLoaded(callback) {
     uiLoadedCallbacks.push(callback);
 }
+function onUiLoadedOnce(callback,condition=()=>false) {
+    if(condition()){
+        let ret=callback();
+        if (!ret){
+            onceUiLoadedCallbacks.push(callback);
+            onceUiLoadedCallbacks_on.push(condition);
+        }
+    }else{
+        onceUiLoadedCallbacks.push(callback);
+        onceUiLoadedCallbacks_on.push(condition);
+    }
+}
 
 /**
  * Register callback to be called when the UI tab is changed.
@@ -87,6 +101,27 @@ function executeCallbacks(queue, arg) {
     }
 }
 
+function executeCallbackSelf(queue, condition) {
+    let condition_=[]
+    let queue_= queue.filter(function (value,index) {
+        let ret=true; 
+        try {
+            if (condition[index](value)){
+                ret=value();
+                if(!ret){
+                    condition_.push(condition[index]);
+                }
+            }else{
+                condition_.push(condition[index]);
+            }
+        } catch (e) {
+            console.error("error running  :", e);
+        }
+        return ret;
+      });
+    queue=queue_;
+    condition=condition_;
+}
 /**
  * Schedule the execution of the callbacks registered with onAfterUiUpdate.
  * The callbacks are executed after a short while, unless another call to this function
@@ -95,36 +130,31 @@ function executeCallbacks(queue, arg) {
  */
 function scheduleAfterUiUpdateCallbacks() {
     clearTimeout(uiAfterUpdateTimeout);
-    uiAfterUpdateTimeout = setTimeout(function() {
+    uiAfterUpdateTimeout = setTimeout(function () {
         executeCallbacks(uiAfterUpdateCallbacks);
     }, 200);
 }
 
 var executedOnLoaded = false;
 function load_() {
-    var mutationObserver = new MutationObserver(function(m) {
-        if (!executedOnLoaded && gradioApp().querySelector('pwd')) {
+    var mutationObserver = new MutationObserver(function (m) {
+        if (!executedOnLoaded && gradioApp().querySelector('#pwd')) {
             executedOnLoaded = true;
-            executeCallbacks(uiLoadedCallbacks);
+            executeCallbacks(uiLoadedCallbacks); 
         }
-
+        executeCallbackSelf(onceUiLoadedCallbacks,onceUiLoadedCallbacks_on);
         executeCallbacks(uiUpdateCallbacks, m);
         scheduleAfterUiUpdateCallbacks();
-        const newTab = get_uiCurrentTab();
-        if (newTab && (newTab !== uiCurrentTab)) {
-            uiCurrentTab = newTab;
-            executeCallbacks(uiTabChangeCallbacks);
-        }
         console.log("mutationObserver--end")
     });
-    mutationObserver.observe(gradioApp(), {childList: true, subtree: true});
-  }
+    mutationObserver.observe(gradioApp(), { childList: true, subtree: true });
+}
 
 if (document.readyState !== 'loading') {
+    alert("load")
     load_();
 } else {
     document.addEventListener('DOMContentLoaded', function () {
-        
         load_();
     });
 }
@@ -132,7 +162,7 @@ if (document.readyState !== 'loading') {
 /**
  * Add a ctrl+enter as a shortcut to start a generation
  */
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     var handled = false;
     if (e.key !== undefined) {
         if ((e.key == "Enter" && (e.metaKey || e.ctrlKey || e.altKey))) handled = true;
@@ -170,22 +200,22 @@ function uiElementInSight(el) {
 
     return isOnScreen;
 }
-function sendPostRequest(url, data, callback,errCallback=()=>{}) {
+function sendPostRequest(url, data, callback, errCallback = () => { }) {
     fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
-    .then(function(response) {       
-      return response.json();
-    })
-    .then(function(responseData) {
-      callback(responseData);
-    })
-    .catch(function(error) {
-      console.error(error);
-      errCallback(error);
-    });
-  }
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (responseData) {
+            callback(responseData);
+        })
+        .catch(function (error) {
+            console.error(error);
+            errCallback(error);
+        });
+}

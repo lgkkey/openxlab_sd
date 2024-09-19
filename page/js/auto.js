@@ -606,7 +606,6 @@ function __() {
 
 var tacLoading = false;
 
-
 function checkFunctionDefined(){
     if (typeof(onUiUpdate) === 'function') {
         console.log('onUiUpdate 函数已定义，开始监听...');

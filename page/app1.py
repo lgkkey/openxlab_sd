@@ -7,32 +7,24 @@ import uvicorn
 import subprocess
 import gradio as gr
 fastapi_app=FastAPI()
-script_path=r"E:\self\openxlab_sd\page\js"
+script_path=r"/home/xlab-app-center/openxlab_sd/page/js"
+
+_gradio_template_response_orig = gr.routes.templates.TemplateResponse
 
 class Item(BaseModel):
     pwd:str
-    
-@fastapi_app.post("/hello/get/list")
-async def get_list(item:Item):
-    print(item.pwd)
-    res=run_cmd("ls -a",item.pwd)
-    array_res=res.split("\n")
-    if len(array_res) > 0:
-        return [x for x in array_res if x.strip()]
-    
-    return [] 
+
 def list_scripts(scriptdirpath):
     if (not os.path.isdir(script_path)):
         script_path_="./page/js"
     else:
         script_path_=script_path
     scripts_list = []
-    if os.path.exists(scriptdirpath):
-        for filename in sorted(os.listdir(scriptdirpath)):
+    if os.path.exists(script_path_):
+        for filename in sorted(os.listdir(script_path_)):
             scripts_list.append(os.path.join(script_path_,filename))
             print(f"load js file:{filename}")
     return scripts_list
-
 def javascript_html():
     # Ensure localization is in `window` before scripts
     # head = f'<script type="text/javascript">{localization.localization_js(shared.opts.localization)}</script>\n'
@@ -44,6 +36,27 @@ def javascript_html():
             head += f'<script defer>{js}</script>\n'
 
     return head
+
+js=javascript_html()
+def template_response(*args, **kwargs):
+    res = _gradio_template_response_orig(*args, **kwargs)
+    res.body = res.body.replace(b'</head>', f'{js}</head>'.encode("utf8"))
+    res.init_headers()
+    with open("index.html","w",encoding="UTF-8") as f:
+        f.write(res.body.decode("utf8"))
+    return res
+
+gr.routes.templates.TemplateResponse = template_response
+
+@fastapi_app.post("/hello/get/list")
+async def get_list(item:Item):
+    print(item.pwd)
+    res=run_cmd("ls -a",item.pwd)
+    array_res=res.split("\n")
+    if len(array_res) > 0:
+        return [x for x in array_res if x.strip()]
+    
+    return [] 
 
 show_shell_info=False
 def run_cmd(command, cwd=None, desc=None, errdesc=None, custom_env=None,try_error:bool=True) -> str:
@@ -93,7 +106,7 @@ def output_txt(input,pwd):
     else:
         res=run_cmd(input)
     return res
-with gr.Blocks(head=javascript_html()) as demo:
+with gr.Blocks() as demo:
     pwd=gr.Textbox(label="执行路径",elem_id = "pwd")
     input=gr.TextArea()
     output=gr.Textbox(lines=10)

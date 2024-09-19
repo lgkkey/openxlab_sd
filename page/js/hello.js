@@ -29,4 +29,23 @@ function createGradioAnimation() {
 
     return 'Animation created';
 }
-createGradioAnimation()
+
+const hello = setInterval(()=>{
+    if (typeof(onUiLoadedOnce) === 'function') {
+        console.log('onUiUpdate 函数已定义，开始监听...');
+        onUiLoadedOnce(() => {
+            createGradioAnimation()
+
+            return true;
+        },()=>{
+            var gradioContainer = document.querySelector('.gradio-container');
+            if (gradioContainer){
+                return true;
+            }
+            return false;
+        });
+        clearInterval(hello); 
+    } else {
+        console.log('updateInput 函数尚未定义，继续检查...');
+    }
+}, 1000);
