@@ -119,4 +119,4 @@ with gr.Blocks() as demo:
     
  
 fastapi_app=gr.mount_gradio_app(fastapi_app,demo,path="/hello")
-uvicorn.run(fastapi_app,host='0.0.0.0',port=7890)
+uvicorn.run(fastapi_app,host='0.0.0.0',port=7860)

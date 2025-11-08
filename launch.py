@@ -107,8 +107,8 @@ os.chdir(root_path)
 app1=multiprocessing.Process(target=launch_app1)
 app1.start()
 
-app2=multiprocessing.Process(target=launch_sd)
-app2.start()
+# app2=multiprocessing.Process(target=launch_sd)
+# app2.start()
 
 while True:
     # os.system(f"python main.py --cpu --listen ")
